@@ -1,0 +1,211 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FE20643C2343BF47006614AA /* TKProjectTemplateExtensionInstall */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FE20643D2343BF47006614AA /* Build configuration list for PBXAggregateTarget "TKProjectTemplateExtensionInstall" */;
+			buildPhases = (
+				FE2064442343C03C006614AA /* [TK]Project template extension install */,
+			);
+			dependencies = (
+			);
+			name = TKProjectTemplateExtensionInstall;
+			productName = TKProjectTemplateExtensionInstall;
+		};
+		FE2064402343BF5A006614AA /* TKProjectTemplateExtensionUninstall */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FE2064412343BF5A006614AA /* Build configuration list for PBXAggregateTarget "TKProjectTemplateExtensionUninstall" */;
+			buildPhases = (
+				FE2064452343C04F006614AA /* [TK]Project template extension uninstall */,
+			);
+			dependencies = (
+			);
+			name = TKProjectTemplateExtensionUninstall;
+			productName = TKProjectTemplateExtensionUninstall;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXFileReference section */
+		FE20643A2343AB9E006614AA /* Password */ = {isa = PBXFileReference; lastKnownFileType = text; path = Password; sourceTree = "<group>"; };
+		FE20643B2343AB9E006614AA /* TKProjectTemplateExtension.xctemplate */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TKProjectTemplateExtension.xctemplate; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		FE2064322343AA35006614AA = {
+			isa = PBXGroup;
+			children = (
+				FE2064392343AB56006614AA /* TKProjectTemplateExtension */,
+			);
+			sourceTree = "<group>";
+		};
+		FE2064392343AB56006614AA /* TKProjectTemplateExtension */ = {
+			isa = PBXGroup;
+			children = (
+				FE20643A2343AB9E006614AA /* Password */,
+				FE20643B2343AB9E006614AA /* TKProjectTemplateExtension.xctemplate */,
+			);
+			path = TKProjectTemplateExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		FE2064332343AA35006614AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1100;
+				TargetAttributes = {
+					FE20643C2343BF47006614AA = {
+						CreatedOnToolsVersion = 11.0;
+					};
+					FE2064402343BF5A006614AA = {
+						CreatedOnToolsVersion = 11.0;
+					};
+				};
+			};
+			buildConfigurationList = FE2064362343AA35006614AA /* Build configuration list for PBXProject "TKProjectTemplateExtension" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FE2064322343AA35006614AA;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE20643C2343BF47006614AA /* TKProjectTemplateExtensionInstall */,
+				FE2064402343BF5A006614AA /* TKProjectTemplateExtensionUninstall */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE2064442343C03C006614AA /* [TK]Project template extension install */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[TK]Project template extension install";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ORIGIN_PATH=\"/Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates/Project Templates\"\nGROUP_NAME=\"Base/Other\"\nGROUP_PATH=\"${ORIGIN_PATH}/${GROUP_NAME}\"\nLOCAL_PATH=\"${PROJECT_DIR}/${PROJECT_NAME}\"\nTEMPLATE_NAME=\"${PROJECT_NAME}.xctemplate\"\nPASSWORD_FILE=\"${PROJECT_DIR}/${PROJECT_NAME}/Password\"\n\nremoveFun(){\n    if [ -d \"${GROUP_PATH}/${TEMPLATE_NAME}\" ]; then   \n        if [ $# -eq 0 ]; then\n#apple script\n#----------------------\noriginFile=\"${GROUP_PATH}/${TEMPLATE_NAME}\"    \nosascript <<EOF\n    tell application \"Finder\"\n            delete POSIX file \"$originFile\"\n    end tell\nEOF\n#----------------------\n        else\n            PASSWORD=$1\n            echo \"${PASSWORD}\" | sudo -S rm -fr \"${GROUP_PATH}/${TEMPLATE_NAME}\"\n        fi\n    else\n        echo \"[Origin File NotFound]\"\n    fi \n}\n\nduplicateFun(){\n    if [ $# -eq 0 ]; then\n#apple script\n#----------------------\nlocalFile=\"${LOCAL_PATH}/${TEMPLATE_NAME}\"\noriginFloder=\"${GROUP_PATH}\"\nosascript <<EOF\ntell application \"Finder\"\n    duplicate POSIX file \"$localFile\" to POSIX file \"$originFloder\"\nend tell\nEOF\n#---------------------- \n    else\n        PASSWORD=$1\n        echo \"${PASSWORD}\" | sudo -S cp -fr\\\n        \"${LOCAL_PATH}/${TEMPLATE_NAME}\"\\\n        \"${GROUP_PATH}/${TEMPLATE_NAME}\"\n    fi\n}\n\nsyncFun(){\n    if [ $# -eq 0 ]; then  \n        removeFun\n        duplicateFun\n    else\n        PASSWORD=$1\n        removeFun \"${PASSWORD}\"\n        duplicateFun \"${PASSWORD}\" \n    fi\n}\n\nif [ -e \"${PASSWORD_FILE}\" ]; then\n    PASSWORD=`cat \"${PASSWORD_FILE}\"`\n    if [ ${#PASSWORD} -eq 0 ]; then\n        echo \"[Password not set]\"\n        syncFun\n    else\n        echo \"[Password has set]\"\n        syncFun \"${PASSWORD}\" \n    fi\nelse\n    echo \"[Password file not set]\" \n    syncFun\nfi\n\n";
+		};
+		FE2064452343C04F006614AA /* [TK]Project template extension uninstall */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[TK]Project template extension uninstall";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ORIGIN_PATH=\"/Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates/Project Templates\"\nGROUP_NAME=\"Base/Other\"\nGROUP_PATH=\"${ORIGIN_PATH}/${GROUP_NAME}\"\nLOCAL_PATH=\"${PROJECT_DIR}/${PROJECT_NAME}\"\nTEMPLATE_NAME=\"${PROJECT_NAME}.xctemplate\"\nPASSWORD_FILE=\"${PROJECT_DIR}/${PROJECT_NAME}/Password\"\n\nremoveFun(){\n    if [ -d \"${GROUP_PATH}/${TEMPLATE_NAME}\" ]; then   \n        if [ $# -eq 0 ]; then\n#apple script\n#----------------------\noriginFile=\"${GROUP_PATH}/${TEMPLATE_NAME}\"    \nosascript <<EOF\n    tell application \"Finder\"\n            delete POSIX file \"$originFile\"\n    end tell\nEOF\n#----------------------\n        else\n            PASSWORD=$1\n            echo \"${PASSWORD}\" | sudo -S rm -fr \"${GROUP_PATH}/${TEMPLATE_NAME}\"\n        fi\n    else\n        echo \"[Origin File NotFound]\"\n    fi \n}\n\nsyncFun(){\n    if [ $# -eq 0 ]; then  \n        removeFun\n    else\n        PASSWORD=$1\n        removeFun \"${PASSWORD}\" \n    fi\n}\n\nif [ -e \"${PASSWORD_FILE}\" ]; then\n    PASSWORD=`cat \"${PASSWORD_FILE}\"`\n    if [ ${#PASSWORD} -eq 0 ]; then\n        echo \"[Password not set]\"\n        syncFun\n    else\n        echo \"[Password has set]\"\n        syncFun \"${PASSWORD}\" \n    fi\nelse\n    echo \"[Password file not set]\" \n    syncFun\nfi\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FE2064372343AA35006614AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		FE2064382343AA35006614AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		FE20643E2343BF47006614AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 466T2LS7MJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FE20643F2343BF47006614AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 466T2LS7MJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FE2064422343BF5A006614AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 466T2LS7MJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FE2064432343BF5A006614AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 466T2LS7MJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE2064362343AA35006614AA /* Build configuration list for PBXProject "TKProjectTemplateExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE2064372343AA35006614AA /* Debug */,
+				FE2064382343AA35006614AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE20643D2343BF47006614AA /* Build configuration list for PBXAggregateTarget "TKProjectTemplateExtensionInstall" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE20643E2343BF47006614AA /* Debug */,
+				FE20643F2343BF47006614AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE2064412343BF5A006614AA /* Build configuration list for PBXAggregateTarget "TKProjectTemplateExtensionUninstall" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE2064422343BF5A006614AA /* Debug */,
+				FE2064432343BF5A006614AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE2064332343AA35006614AA /* Project object */;
+}
