@@ -558,7 +558,6 @@ ORIGIN_FOLDER=&quot;___VARIABLE_basePlatformFolder___&quot;
 if [ ! ${#ORIGIN_FOLDER} -eq 0 ]; then
     ORIGIN_PATH=&quot;${ORIGIN_PATH}/${ORIGIN_FOLDER}&quot;
 fi
-ORIGIN_PATH/___VARIABLE_basePlatformFolder___
 GROUP_NAME=&quot;___VARIABLE_groupName___&quot;
 GROUP_PATH=&quot;${ORIGIN_PATH}/${GROUP_NAME}&quot;
 LOCAL_PATH=&quot;${PROJECT_DIR}/${PROJECT_NAME}&quot;
@@ -686,7 +685,6 @@ ORIGIN_FOLDER=&quot;___VARIABLE_basePlatformFolder___&quot;
 if [ ! ${#ORIGIN_FOLDER} -eq 0 ]; then
     ORIGIN_PATH=&quot;${ORIGIN_PATH}/${ORIGIN_FOLDER}&quot;
 fi
-ORIGIN_PATH/___VARIABLE_basePlatformFolder___
 GROUP_NAME=&quot;___VARIABLE_groupName___&quot;
 GROUP_PATH=&quot;${ORIGIN_PATH}/${GROUP_NAME}&quot;
 LOCAL_PATH=&quot;${PROJECT_DIR}/${PROJECT_NAME}&quot;
